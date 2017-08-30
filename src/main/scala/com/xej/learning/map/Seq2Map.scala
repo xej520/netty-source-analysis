@@ -2,7 +2,7 @@ package com.xej.learning.map
 
 /**
   * Created by erjun on 2017/8/29.
-  * 测试用例：将Seq转换成Map类型
+  * 测试用例：将Seq转换成元组形式的Seq，如Seq[Stu]转换成了Seq[(id, Stu)]
   */
 private[map] class Student(val id: Int, val name: String)
 
@@ -21,5 +21,7 @@ object Seq2Map {
 		//	具有高效的apply, length, 以及(如果可变的话) update操作
 		val map2 = seq.map(stu => stu.id -> stu)(collection.breakOut)
 		map2.foreach(stu => println(stu._1 + " ----> " + stu._2.name))
+
 	}
+
 }
