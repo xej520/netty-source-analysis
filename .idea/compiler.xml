@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <option name="DEFAULT_COMPILER" value="Eclipse" />
-    <excludeFromCompile>
-      <file url="file://$PROJECT_DIR$/src/main/scala/cn/netty/demo/akka/demo/Worker.scala" />
-      <file url="file://$PROJECT_DIR$/src/main/scala/com/b2_0/function/AnonymousFunction_Test.scala" />
-      <file url="file://$PROJECT_DIR$/src/main/scala/com/b7_0/yin_shi_Can_shu/YinShiCanShu.scala" />
-    </excludeFromCompile>
     <resourceExtensions />
     <wildcardResourcePatterns>
       <entry name="!?*.java" />
@@ -23,6 +17,70 @@
       <profile default="true" name="Default" enabled="false">
         <processorPath useClasspath="true" />
       </profile>
+      <profile default="false" name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="netty-all" />
+        <module name="netty-buffer" />
+        <module name="netty-codec" />
+        <module name="netty-codec-dns" />
+        <module name="netty-codec-haproxy" />
+        <module name="netty-codec-http" />
+        <module name="netty-codec-http2" />
+        <module name="netty-codec-memcache" />
+        <module name="netty-codec-mqtt" />
+        <module name="netty-codec-redis" />
+        <module name="netty-codec-smtp" />
+        <module name="netty-codec-socks" />
+        <module name="netty-codec-stomp" />
+        <module name="netty-codec-xml" />
+        <module name="netty-common" />
+        <module name="netty-example" />
+        <module name="netty-handler" />
+        <module name="netty-handler-proxy" />
+        <module name="netty-microbench" />
+        <module name="netty-resolver" />
+        <module name="netty-resolver-dns" />
+        <module name="netty-testsuite" />
+        <module name="netty-testsuite-osgi" />
+        <module name="netty-transport" />
+        <module name="netty-transport-rxtx" />
+        <module name="netty-transport-sctp" />
+        <module name="netty-transport-udt" />
+      </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="netty-all" target="1.6" />
+      <module name="netty-buffer" target="1.6" />
+      <module name="netty-codec" target="1.6" />
+      <module name="netty-codec-dns" target="1.6" />
+      <module name="netty-codec-haproxy" target="1.6" />
+      <module name="netty-codec-http" target="1.6" />
+      <module name="netty-codec-http2" target="1.6" />
+      <module name="netty-codec-memcache" target="1.6" />
+      <module name="netty-codec-mqtt" target="1.6" />
+      <module name="netty-codec-redis" target="1.6" />
+      <module name="netty-codec-smtp" target="1.6" />
+      <module name="netty-codec-socks" target="1.6" />
+      <module name="netty-codec-stomp" target="1.6" />
+      <module name="netty-codec-xml" target="1.6" />
+      <module name="netty-common" target="1.6" />
+      <module name="netty-example" target="1.6" />
+      <module name="netty-handler" target="1.6" />
+      <module name="netty-handler-proxy" target="1.6" />
+      <module name="netty-microbench" target="1.6" />
+      <module name="netty-parent" target="1.6" />
+      <module name="netty-resolver" target="1.6" />
+      <module name="netty-resolver-dns" target="1.6" />
+      <module name="netty-tarball" target="1.6" />
+      <module name="netty-testsuite" target="1.6" />
+      <module name="netty-testsuite-osgi" target="1.6" />
+      <module name="netty-transport" target="1.6" />
+      <module name="netty-transport-rxtx" target="1.6" />
+      <module name="netty-transport-sctp" target="1.6" />
+      <module name="netty-transport-udt" target="1.6" />
+    </bytecodeTargetLevel>
   </component>
 </project>

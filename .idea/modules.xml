@@ -2,8 +2,35 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/scala_wiki_00000.iml" filepath="$PROJECT_DIR$/.idea/modules/scala_wiki_00000.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/scala_wiki_00000-build.iml" filepath="$PROJECT_DIR$/.idea/modules/scala_wiki_00000-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/all/netty-all.iml" filepath="$PROJECT_DIR$/all/netty-all.iml" />
+      <module fileurl="file://$PROJECT_DIR$/buffer/netty-buffer.iml" filepath="$PROJECT_DIR$/buffer/netty-buffer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/codec/netty-codec.iml" filepath="$PROJECT_DIR$/codec/netty-codec.iml" />
+      <module fileurl="file://$PROJECT_DIR$/codec-dns/netty-codec-dns.iml" filepath="$PROJECT_DIR$/codec-dns/netty-codec-dns.iml" />
+      <module fileurl="file://$PROJECT_DIR$/codec-haproxy/netty-codec-haproxy.iml" filepath="$PROJECT_DIR$/codec-haproxy/netty-codec-haproxy.iml" />
+      <module fileurl="file://$PROJECT_DIR$/codec-http/netty-codec-http.iml" filepath="$PROJECT_DIR$/codec-http/netty-codec-http.iml" />
+      <module fileurl="file://$PROJECT_DIR$/codec-http2/netty-codec-http2.iml" filepath="$PROJECT_DIR$/codec-http2/netty-codec-http2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/codec-memcache/netty-codec-memcache.iml" filepath="$PROJECT_DIR$/codec-memcache/netty-codec-memcache.iml" />
+      <module fileurl="file://$PROJECT_DIR$/codec-mqtt/netty-codec-mqtt.iml" filepath="$PROJECT_DIR$/codec-mqtt/netty-codec-mqtt.iml" />
+      <module fileurl="file://$PROJECT_DIR$/codec-redis/netty-codec-redis.iml" filepath="$PROJECT_DIR$/codec-redis/netty-codec-redis.iml" />
+      <module fileurl="file://$PROJECT_DIR$/codec-smtp/netty-codec-smtp.iml" filepath="$PROJECT_DIR$/codec-smtp/netty-codec-smtp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/codec-socks/netty-codec-socks.iml" filepath="$PROJECT_DIR$/codec-socks/netty-codec-socks.iml" />
+      <module fileurl="file://$PROJECT_DIR$/codec-stomp/netty-codec-stomp.iml" filepath="$PROJECT_DIR$/codec-stomp/netty-codec-stomp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/codec-xml/netty-codec-xml.iml" filepath="$PROJECT_DIR$/codec-xml/netty-codec-xml.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common/netty-common.iml" filepath="$PROJECT_DIR$/common/netty-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/example/netty-example.iml" filepath="$PROJECT_DIR$/example/netty-example.iml" />
+      <module fileurl="file://$PROJECT_DIR$/handler/netty-handler.iml" filepath="$PROJECT_DIR$/handler/netty-handler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/handler-proxy/netty-handler-proxy.iml" filepath="$PROJECT_DIR$/handler-proxy/netty-handler-proxy.iml" />
+      <module fileurl="file://$PROJECT_DIR$/microbench/netty-microbench.iml" filepath="$PROJECT_DIR$/microbench/netty-microbench.iml" />
+      <module fileurl="file://$PROJECT_DIR$/netty-parent.iml" filepath="$PROJECT_DIR$/netty-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/resolver/netty-resolver.iml" filepath="$PROJECT_DIR$/resolver/netty-resolver.iml" />
+      <module fileurl="file://$PROJECT_DIR$/resolver-dns/netty-resolver-dns.iml" filepath="$PROJECT_DIR$/resolver-dns/netty-resolver-dns.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tarball/netty-tarball.iml" filepath="$PROJECT_DIR$/tarball/netty-tarball.iml" />
+      <module fileurl="file://$PROJECT_DIR$/testsuite/netty-testsuite.iml" filepath="$PROJECT_DIR$/testsuite/netty-testsuite.iml" />
+      <module fileurl="file://$PROJECT_DIR$/testsuite-osgi/netty-testsuite-osgi.iml" filepath="$PROJECT_DIR$/testsuite-osgi/netty-testsuite-osgi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/transport/netty-transport.iml" filepath="$PROJECT_DIR$/transport/netty-transport.iml" />
+      <module fileurl="file://$PROJECT_DIR$/transport-rxtx/netty-transport-rxtx.iml" filepath="$PROJECT_DIR$/transport-rxtx/netty-transport-rxtx.iml" />
+      <module fileurl="file://$PROJECT_DIR$/transport-sctp/netty-transport-sctp.iml" filepath="$PROJECT_DIR$/transport-sctp/netty-transport-sctp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/transport-udt/netty-transport-udt.iml" filepath="$PROJECT_DIR$/transport-udt/netty-transport-udt.iml" />
     </modules>
   </component>
 </project>

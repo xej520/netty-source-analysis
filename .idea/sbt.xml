@@ -5,23 +5,6 @@
     <option name="customLauncherPath" value="C:\Program1\sbt\bin\sbt-launch.jar" />
     <option name="customVMEnabled" value="true" />
     <option name="customVMPath" value="E:\Program\java\jdk1.8.0_112" />
-    <option name="linkedExternalProjectsSettings">
-      <SbtProjectSettings>
-        <option name="createEmptyContentRootDirectories" value="true" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="jdk" value="1.8" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/project" />
-          </set>
-        </option>
-        <option name="resolveClassifiers" value="false" />
-        <option name="sbtVersion" value="0.13.8" />
-        <option name="useAutoImport" value="true" />
-        <option name="useOurOwnAutoImport" value="true" />
-      </SbtProjectSettings>
-    </option>
     <option name="vmParameters" value="-XX:MaxPermSize=384M -Dsbt.ivy.home=C:/Users/erjun/.ivy2 -Dsbt.repository.config=C:/Users/erjun/.sbt/repositories" />
   </component>
 </project>
