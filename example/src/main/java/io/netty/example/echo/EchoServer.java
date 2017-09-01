@@ -74,17 +74,13 @@ public final class EchoServer {
 //                     p.addLast(new LoggingHandler(LogLevel.INFO));
                      p.addLast(
                              new DelimiterBasedFrameDecoder(Integer.MAX_VALUE, Delimiters.lineDelimiter()[0]));
-
                      p.addLast(new StringDecoder(CharsetUtil.UTF_8));
                      p.addLast(new EchoServerHandler());
                      p.addLast(new StringEncoder(CharsetUtil.UTF_8));
-
                  }
              });
-
             // Start the server.
             ChannelFuture f = b.bind(8080).sync();
-
             // Wait until the server socket is closed.
             f.channel().closeFuture().sync();
         } finally {
