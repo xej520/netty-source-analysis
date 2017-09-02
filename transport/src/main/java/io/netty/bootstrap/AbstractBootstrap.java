@@ -97,6 +97,7 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
         if (channelClass == null) {
             throw new NullPointerException("channelClass");
         }
+        //ReflectiveChannelFactory 没什么，最核心的就是以反射的方式，来创建对象
         return channelFactory(new ReflectiveChannelFactory<C>(channelClass));
     }
 
@@ -173,6 +174,8 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
                 options.remove(option);
             }
         } else {
+            //options是一个LinkedHashMap 容器
+            //添加锁哦
             synchronized (options) {
                 options.put(option, value);
             }

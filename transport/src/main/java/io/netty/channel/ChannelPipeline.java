@@ -36,7 +36,7 @@ import java.util.NoSuchElementException;
  * interact with each other.
  *
  * <h3>Creation of a pipeline</h3>
- *
+ * 每一个channel，都有自己的pipeline, 一一对应的，新的channel创建时，自动创建对应的pipeline
  * Each channel has its own pipeline and it is created automatically when a new channel is created.
  *
  * <h3>How an event flows in a pipeline</h3>

@@ -18,7 +18,7 @@ import io.netty.handler.codec.string.StringEncoder;
 public class NettyServer {
 	public static void main(String[] args) {
 
-		// 复杂accept请求
+		// 负责accept请求
 		EventLoopGroup parentGroup = new NioEventLoopGroup(1);
 		// 处理请求，读写
 		EventLoopGroup childGroup = new NioEventLoopGroup();

@@ -36,6 +36,8 @@ public abstract class MultithreadEventLoopGroup extends MultithreadEventExecutor
     private static final int DEFAULT_EVENT_LOOP_THREADS;
 
     static {
+        //可见在NioEventLoopGroup的父类MultithreadEventLoopGroup里，初始化了
+        //默认线程的数量
         DEFAULT_EVENT_LOOP_THREADS = Math.max(1, SystemPropertyUtil.getInt(
                 "io.netty.eventLoopThreads", Runtime.getRuntime().availableProcessors() * 2));
 
@@ -67,8 +69,11 @@ public abstract class MultithreadEventLoopGroup extends MultithreadEventExecutor
         super(nThreads == 0 ? DEFAULT_EVENT_LOOP_THREADS : nThreads, executor, chooserFactory, args);
     }
 
+    //子类覆盖了父类里的newDefaultThreadFactory方法，
+    //因此，实际调用的是子类的方法
     @Override
     protected ThreadFactory newDefaultThreadFactory() {
+        logger.info("======>ThreadFactory=======getClass()========\n" + getClass());
         return new DefaultThreadFactory(getClass(), Thread.MAX_PRIORITY);
     }
 

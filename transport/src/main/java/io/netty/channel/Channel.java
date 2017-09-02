@@ -28,6 +28,7 @@ import java.net.SocketAddress;
 
 
 /**
+ * IO操作，如 读、写、连接、绑定
  * A nexus to a network socket or a component which is capable of I/O
  * operations such as read, write, connect, and bind.
  * <p>

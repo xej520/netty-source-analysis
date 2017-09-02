@@ -15,6 +15,11 @@
  */
 package io.netty.util.concurrent;
 
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -29,6 +34,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * the same time.
  */
 public abstract class MultithreadEventExecutorGroup extends AbstractEventExecutorGroup {
+
+    private static final Logger logger = LoggerFactory.getLogger(MultithreadEventExecutorGroup.class);
 
     private final EventExecutor[] children;
     private final Set<EventExecutor> readonlyChildren;
@@ -72,22 +79,29 @@ public abstract class MultithreadEventExecutorGroup extends AbstractEventExecuto
             throw new IllegalArgumentException(String.format("nThreads: %d (expected: > 0)", nThreads));
         }
 
+        logger.info("--->executor=\t" + executor);
         if (executor == null) {
+            logger.info("--->newDefaultThreadFactory=\t" + executor);
             executor = new ThreadPerTaskExecutor(newDefaultThreadFactory());
         }
 
+        //注意，这里，仅仅是声明，并没有初始化哦
         children = new EventExecutor[nThreads];
 
+        //批量循环初始化数组children哦
         for (int i = 0; i < nThreads; i ++) {
-            boolean success = false;
+            boolean success = false;  //默认为false
             try {
                 children[i] = newChild(executor, args);
                 success = true;
             } catch (Exception e) {
+                //很明显是 异常流程
                 // TODO: Think about if this is a good exception type
                 throw new IllegalStateException("failed to create a child event loop", e);
             } finally {
+                //要处理的流程
                 if (!success) {
+                    //如果第i个子newChild创建失败，如何处理
                     for (int j = 0; j < i; j ++) {
                         children[j].shutdownGracefully();
                     }
@@ -128,6 +142,7 @@ public abstract class MultithreadEventExecutorGroup extends AbstractEventExecuto
         readonlyChildren = Collections.unmodifiableSet(childrenSet);
     }
 
+    //创建默认的线程工厂
     protected ThreadFactory newDefaultThreadFactory() {
         return new DefaultThreadFactory(getClass());
     }

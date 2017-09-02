@@ -47,7 +47,9 @@ public class NioEventLoopGroup extends MultithreadEventLoopGroup {
      * Create a new instance using the specified number of threads, {@link ThreadFactory} and the
      * {@link SelectorProvider} which is returned by {@link SelectorProvider#provider()}.
      */
+    //传入指定的线程个数
     public NioEventLoopGroup(int nThreads) {
+        //this()调用的是自己的构造方法
         this(nThreads, (Executor) null);
     }
 
@@ -60,7 +62,9 @@ public class NioEventLoopGroup extends MultithreadEventLoopGroup {
     }
 
     public NioEventLoopGroup(int nThreads, Executor executor) {
+        //SelectorProvider.provider()会根据不同的操作系统，返回不同的实例，主要是想通过这个，来创建多路复用器哦
         this(nThreads, executor, SelectorProvider.provider());
+        System.out.println("------>NioEventLoopGroup.java<----" + SelectorProvider.provider().toString());
     }
 
     /**
