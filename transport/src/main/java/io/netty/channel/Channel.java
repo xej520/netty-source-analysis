@@ -28,7 +28,7 @@ import java.net.SocketAddress;
 
 
 /**
- * IO操作，如 读、写、连接、绑定
+ * IO操作，如 读、写、连接、绑定的套接字 或者 组件
  * A nexus to a network socket or a component which is capable of I/O
  * operations such as read, write, connect, and bind.
  * <p>
@@ -41,14 +41,17 @@ import java.net.SocketAddress;
  *     associated with the channel.</li>
  * </ul>
  *
- * <h3>All I/O operations are asynchronous.</h3>
+ * <h3>All I/O operations are asynchronous.
+ *      所有的I/O请求都是异步的，请求将立即返回。
+ * </h3>
  * <p>
  * All I/O operations in Netty are asynchronous.  It means any I/O calls will
  * return immediately with no guarantee that the requested I/O operation has
  * been completed at the end of the call.  Instead, you will be returned with
  * a {@link ChannelFuture} instance which will notify you when the requested I/O
  * operation has succeeded, failed, or canceled.
- *
+ * 在Netty里，所有请求都是异步，意味着，任何的IO请求都会立即返回，并不保证所有的请求都能够完成；
+ * 但是，你会得到一个ChannelFuture实例，此实例， 你可以通过此实例，来判断此IO请求，是否成功，失败，或者取消了。
  * <h3>Channels are hierarchical</h3>
  * <p>
  * A {@link Channel} can have a {@linkplain #parent() parent} depending on
@@ -74,17 +77,22 @@ import java.net.SocketAddress;
  * It is important to call {@link #close()} or {@link #close(ChannelPromise)} to release all
  * resources once you are done with the {@link Channel}. This ensures all resources are
  * released in a proper way, i.e. filehandles.
+ * 就是用完之后，要释放资源
  */
+//很明显，下面是重新声明了一个Channel，
+    //因此，netty里的Channel是不同于NIO里的Channel的
 public interface Channel extends AttributeMap, ChannelOutboundInvoker, Comparable<Channel> {
 
     /**
      * Returns the globally unique identifier of this {@link Channel}.
      */
+//    返回唯一标识
     ChannelId id();
 
     /**
      * Return the {@link EventLoop} this {@link Channel} was registered to.
      */
+//    返回被注册的事件循环
     EventLoop eventLoop();
 
     /**
@@ -93,31 +101,37 @@ public interface Channel extends AttributeMap, ChannelOutboundInvoker, Comparabl
      * @return the parent channel.
      *         {@code null} if this channel does not have a parent channel.
      */
+//    返回父Channel
     Channel parent();
 
     /**
      * Returns the configuration of this channel.
      */
+//    返回Channel的配置(socket)
     ChannelConfig config();
 
     /**
      * Returns {@code true} if the {@link Channel} is open and may get active later
      */
+//    判断是否打开，注册，活跃
     boolean isOpen();
 
     /**
      * Returns {@code true} if the {@link Channel} is registered with an {@link EventLoop}.
      */
+//    判断Channel是否注册到了EventLoop
     boolean isRegistered();
 
     /**
      * Return {@code true} if the {@link Channel} is active and so connected.
      */
+//    判断是否激活了
     boolean isActive();
 
     /**
      * Return the {@link ChannelMetadata} of the {@link Channel} which describe the nature of the {@link Channel}.
      */
+//    Channel元数据,可以获取底层的TCP参数信息
     ChannelMetadata metadata();
 
     /**
@@ -129,6 +143,7 @@ public interface Channel extends AttributeMap, ChannelOutboundInvoker, Comparabl
      * @return the local address of this channel.
      *         {@code null} if this channel is not bound.
      */
+//    Channel绑定的本地地址
     SocketAddress localAddress();
 
     /**
@@ -145,12 +160,14 @@ public interface Channel extends AttributeMap, ChannelOutboundInvoker, Comparabl
      *         the origination of the received message as this method will
      *         return {@code null}.
      */
+//    Channel连接的远端地址
     SocketAddress remoteAddress();
 
     /**
      * Returns the {@link ChannelFuture} which will be notified when this
      * channel is closed.  This method always returns the same future instance.
      */
+//    很明显是用来关闭Channel的，返回ChannelFuture，意味着是异步的
     ChannelFuture closeFuture();
 
     /**
@@ -159,18 +176,25 @@ public interface Channel extends AttributeMap, ChannelOutboundInvoker, Comparabl
      * this method returns {@code false} are queued until the I/O thread is
      * ready to process the queued write requests.
      */
+//    所有的写请求，都必须按照先后顺序进行，
+//    当IO线程，准备好写请求了，返回的是才是true，
+//    否则返回的是false
+//    从方法的名称也可以看出来，是否可以写
     boolean isWritable();
 
     /**
      * Get how many bytes can be written until {@link #isWritable()} returns {@code false}.
      * This quantity will always be non-negative. If {@link #isWritable()} is {@code false} then 0.
      */
+//    还是有点不太明白，返回是
+//    获取字节数，
     long bytesBeforeUnwritable();
 
     /**
      * Get how many bytes must be drained from underlying buffers until {@link #isWritable()} returns {@code true}.
      * This quantity will always be non-negative. If {@link #isWritable()} is {@code true} then 0.
      */
+//    获取字节数
     long bytesBeforeWritable();
 
     /**
@@ -181,6 +205,7 @@ public interface Channel extends AttributeMap, ChannelOutboundInvoker, Comparabl
     /**
      * Return the assigned {@link ChannelPipeline}.
      */
+//    返回指定的ChannelPipeline实例
     ChannelPipeline pipeline();
 
     /**
@@ -220,6 +245,7 @@ public interface Channel extends AttributeMap, ChannelOutboundInvoker, Comparabl
          * Return the {@link SocketAddress} to which is bound local or
          * {@code null} if none.
          */
+//        返回本地绑定的SocketAddress
         SocketAddress localAddress();
 
         /**
@@ -232,12 +258,14 @@ public interface Channel extends AttributeMap, ChannelOutboundInvoker, Comparabl
          * Register the {@link Channel} of the {@link ChannelPromise} and notify
          * the {@link ChannelFuture} once the registration was complete.
          */
+
         void register(EventLoop eventLoop, ChannelPromise promise);
 
         /**
          * Bind the {@link SocketAddress} to the {@link Channel} of the {@link ChannelPromise} and notify
          * it once its done.
          */
+//        进行绑定
         void bind(SocketAddress localAddress, ChannelPromise promise);
 
         /**
@@ -247,6 +275,8 @@ public interface Channel extends AttributeMap, ChannelOutboundInvoker, Comparabl
          *
          * The {@link ChannelPromise} will get notified once the connect operation was complete.
          */
+//        其实，就是连接一下Channel,
+//        一旦连接操作完成后，ChannelPromise 就会获得消息
         void connect(SocketAddress remoteAddress, SocketAddress localAddress, ChannelPromise promise);
 
         /**
