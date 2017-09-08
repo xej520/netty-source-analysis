@@ -40,14 +40,25 @@ import java.util.concurrent.TimeUnit;
  * {@link Bootstrap} sub-class which allows easy bootstrap of {@link ServerChannel}
  *  其实，主要是 初始化一堆属性
  */
+
+// 这里使用的是java的构建器模式
+// 当构造器的输入参数大于4个的时候，比较适合用构建器模式
 public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerChannel> {
 
+    // 记录日常日志等错误，InternalLoggerFactory 使用了java的放射机制 和 工厂模式
     private static final InternalLogger logger = InternalLoggerFactory.getInstance(ServerBootstrap.class);
 
+    //netty4.0 引入了ChannelOption的新类型，它提供了类型安全地访问socket选项
+    //ChannelOption class内部就是socket套接字配置参数，例如SO_KEEPALIVE
     private final Map<ChannelOption<?>, Object> childOptions = new LinkedHashMap<ChannelOption<?>, Object>();
+    //实体属性
     private final Map<AttributeKey<?>, Object> childAttrs = new LinkedHashMap<AttributeKey<?>, Object>();
+
     private final ServerBootstrapConfig config = new ServerBootstrapConfig(this);
+
+    //事件循环，绑定线程池
     private volatile EventLoopGroup childGroup;
+    //处理channel的handler
     private volatile ChannelHandler childHandler;
 
     public ServerBootstrap() { }
@@ -59,6 +70,7 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
         synchronized (bootstrap.childOptions) {
             childOptions.putAll(bootstrap.childOptions);
         }
+        //同步
         synchronized (bootstrap.childAttrs) {
             childAttrs.putAll(bootstrap.childAttrs);
         }
@@ -66,6 +78,7 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
 
     /**
      * Specify the {@link EventLoopGroup} which is used for the parent (acceptor) and the child (client).
+     *
      */
     @Override
     public ServerBootstrap group(EventLoopGroup group) {
