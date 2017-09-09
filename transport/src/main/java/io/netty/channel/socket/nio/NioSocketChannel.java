@@ -328,7 +328,10 @@ public class NioSocketChannel extends AbstractNioByteChannel implements io.netty
 
         boolean success = false;
         try {
+            //最后调用的是java的NIO，进行的socket连接
+            logger.info("-----------调用----java---NIO-----进行-----socket----连接啦-------");
             boolean connected = javaChannel().connect(remoteAddress);
+            logger.info("-----------连接结果------connected------:\t" + connected);
             if (!connected) {
                 selectionKey().interestOps(SelectionKey.OP_CONNECT);
             }

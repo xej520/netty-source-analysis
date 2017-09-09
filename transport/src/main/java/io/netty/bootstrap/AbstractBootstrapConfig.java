@@ -33,6 +33,7 @@ public abstract class AbstractBootstrapConfig<B extends AbstractBootstrap<B, C>,
 
     protected final B bootstrap;
 
+    //参数 bootstrap不能为空
     protected AbstractBootstrapConfig(B bootstrap) {
         this.bootstrap = ObjectUtil.checkNotNull(bootstrap, "bootstrap");
     }

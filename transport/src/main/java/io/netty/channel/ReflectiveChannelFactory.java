@@ -35,7 +35,8 @@ public class ReflectiveChannelFactory<T extends Channel> implements ChannelFacto
     @Override
     public T newChannel() {
         try {
-            //通过class的newInstance来创建对象哈
+            //通过class的newInstance来创建 Channel对象哈
+            //也就是说，在Netty里，管道Channel 是通过反射的方式来创建的
             return clazz.newInstance();
         } catch (Throwable t) {
             throw new ChannelException("Unable to create Channel from class " + clazz, t);

@@ -40,16 +40,24 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
+ * bootstrap: 引导程序的意思
+ * 也就是说，对于netty客户端来说，有了Bootstrap，构建Channel 就会非常的easy了
  * A {@link Bootstrap} that makes it easy to bootstrap a {@link Channel} to use
  * for clients.
  *
  * <p>The {@link #bind()} methods are useful in combination with connectionless transports such as datagram (UDP).
+ * 对于UDP来说，可以使用bind()
  * For regular TCP connections, please use the provided {@link #connect()} methods.</p>
+ * 对于TCP连接来说，可以使用connect方法
  */
+
+//通过Bootstrap 来完成netty客户端 或者 服务器端的初始化
 public class Bootstrap extends AbstractBootstrap<Bootstrap, Channel> {
 
+    //工厂模式，反射代理，日志工具
     private static final InternalLogger logger = InternalLoggerFactory.getInstance(Bootstrap.class);
 
+    //
     private static final AddressResolverGroup<?> DEFAULT_RESOLVER = DefaultAddressResolverGroup.INSTANCE;
 
     private final BootstrapConfig config = new BootstrapConfig(this);
@@ -110,12 +118,18 @@ public class Bootstrap extends AbstractBootstrap<Bootstrap, Channel> {
      * Connect a {@link Channel} to the remote peer.
      */
     public ChannelFuture connect() {
+        //在链接之前，需要校验，
+        //group：EventLoopGroup 线程组
+        //channelFactory: ChannelFactory 管道工厂
+        //handler：ChannelHandler  处理器
+        //这三个参数，是否初始化完成了
         validate();
         SocketAddress remoteAddress = this.remoteAddress;
         if (remoteAddress == null) {
             throw new IllegalStateException("remoteAddress not set");
         }
 
+        //看样子，真正链接的是 doResolveAndConnect方法
         return doResolveAndConnect(remoteAddress, config.localAddress());
     }
 
@@ -157,16 +171,24 @@ public class Bootstrap extends AbstractBootstrap<Bootstrap, Channel> {
     }
 
     /**
+     * 声明了一个私有方法
      * @see {@link #connect()}
      */
     private ChannelFuture doResolveAndConnect(final SocketAddress remoteAddress, final SocketAddress localAddress) {
+        //两个工作
+        //1、创建管道Channel,并进行初始化
+        //2、将初始化好的channel，注册地到EventLoopGroup中去
         final ChannelFuture regFuture = initAndRegister();
+        //获取已经创建好的Channel,
         final Channel channel = regFuture.channel();
 
+        //判断channel是否注册完成了
         if (regFuture.isDone()) {
             if (!regFuture.isSuccess()) {
+                //注册失败的话，直接返回了
                 return regFuture;
             }
+            //注册成功的话，
             return doResolveAndConnect0(channel, remoteAddress, localAddress, channel.newPromise());
         } else {
             // Registration future is almost always fulfilled already, but just in case it's not.
@@ -285,6 +307,7 @@ public class Bootstrap extends AbstractBootstrap<Bootstrap, Channel> {
         }
     }
 
+    //其实，就是确认一下，group, channelFactory, handler是否已经初始化了
     @Override
     public Bootstrap validate() {
         super.validate();

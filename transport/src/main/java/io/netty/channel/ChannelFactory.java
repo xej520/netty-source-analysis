@@ -17,12 +17,14 @@ package io.netty.channel;
 
 /**
  * Creates a new {@link Channel}.
+ * 创建管道Channel
  */
 @SuppressWarnings({ "ClassNameSameAsAncestorName", "deprecation" })
 public interface ChannelFactory<T extends Channel> extends io.netty.bootstrap.ChannelFactory<T> {
     /**
      * Creates a new channel.
      */
+    //噢，这里是覆盖了辅助启动类bootstrap里的
     @Override
     T newChannel();
 }

@@ -21,6 +21,7 @@ import io.netty.resolver.AddressResolverGroup;
 import java.net.SocketAddress;
 
 /**
+ * 暴露Bootstrap的配置
  * Exposes the configuration of a {@link Bootstrap}.
  */
 public final class BootstrapConfig extends AbstractBootstrapConfig<Bootstrap, Channel> {

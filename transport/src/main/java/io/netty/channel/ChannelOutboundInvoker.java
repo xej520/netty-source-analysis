@@ -113,12 +113,14 @@ public interface ChannelOutboundInvoker {
     ChannelFuture bind(SocketAddress localAddress, ChannelPromise promise);
 
     /**
+     *
      * Request to connect to the given {@link SocketAddress} and notify the {@link ChannelFuture} once the operation
      * completes, either because the operation was successful or because of an error.
      *
      * The given {@link ChannelFuture} will be notified.
      *
      * <p>
+     *
      * If the connection fails because of a connection timeout, the {@link ChannelFuture} will get failed with
      * a {@link ConnectTimeoutException}. If it fails because of connection refused a {@link ConnectException}
      * will be used.
@@ -128,6 +130,8 @@ public interface ChannelOutboundInvoker {
      * method called of the next {@link ChannelOutboundHandler} contained in the {@link ChannelPipeline} of the
      * {@link Channel}.
      */
+    //请求连接SocketAddress,并将结果保存在ChannelFuture里
+    //如果连接失败的话，会报连接超时异常的
     ChannelFuture connect(SocketAddress remoteAddress, ChannelPromise promise);
 
     /**

@@ -45,14 +45,23 @@ import java.util.Map;
  * <p>When not used in a {@link ServerBootstrap} context, the {@link #bind()} methods are useful for connectionless
  * transports such as datagram (UDP).</p>
  */
+//抽象类AbstractBootstrap，有两个实例，1、Bootstrap， 2、ServerBootstrap
+
+//Cloneable接口是一个空接口，近用于标记对象。clone()方法是Object类里面的方法，默认实现是一个Native方法
+//如果对象implement Cloneable接口的话，需要覆盖clone方法，(因为Object类的clone方法是protected， 需要覆盖为public,
+// Object类里的clone方法 仅仅用于浅拷贝)
+//浅拷贝，仅仅拷贝基本成员属性，对于引用类型仅返回指向该地址的引用
 public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C extends Channel> implements Cloneable {
 
+    //volatile: 一旦一个共享变量（类的成员变量，类的静态变量）被volatile修饰之后，就具备了下面的特性
+    //1、保证了不同线程对这个变量进行操作时的可见性，即一个线程修改了某个变量的值，其他线程会立刻知道，
     volatile EventLoopGroup group;
     @SuppressWarnings("deprecation")
     private volatile ChannelFactory<? extends C> channelFactory;
     private volatile SocketAddress localAddress;
     private final Map<ChannelOption<?>, Object> options = new LinkedHashMap<ChannelOption<?>, Object>();
     private final Map<AttributeKey<?>, Object> attrs = new LinkedHashMap<AttributeKey<?>, Object>();
+    //private说明，此handler只能在本类内使用，外部对象无法调用的
     private volatile ChannelHandler handler;
 
     AbstractBootstrap() {
@@ -64,6 +73,7 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
         channelFactory = bootstrap.channelFactory;
         handler = bootstrap.handler;
         localAddress = bootstrap.localAddress;
+        //添加同步
         synchronized (bootstrap.options) {
             options.putAll(bootstrap.options);
         }
@@ -73,9 +83,11 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
     }
 
     /**
+     * EventLoopGroup ： 处理所有的 要创建的Channel事件
      * The {@link EventLoopGroup} which is used to handle all the events for the to-be-created
      * {@link Channel}
      */
+    //就是初始化Bootstrap的成员属性group
     @SuppressWarnings("unchecked")
     public B group(EventLoopGroup group) {
         if (group == null) {
@@ -93,6 +105,7 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
      * You either use this or {@link #channelFactory(io.netty.channel.ChannelFactory)} if your
      * {@link Channel} implementation has no no-args constructor.
      */
+    //通过反射，创建一个Channel实例
     public B channel(Class<? extends C> channelClass) {
         if (channelClass == null) {
             throw new NullPointerException("channelClass");
@@ -104,6 +117,8 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
     /**
      * @deprecated Use {@link #channelFactory(io.netty.channel.ChannelFactory)} instead.
      */
+    //也就是说，channelFactory 此方法，已经不建议使用了，
+    //推荐使用io.netty.channel.ChannelFactory 包下的channelFactory
     @Deprecated
     @SuppressWarnings("unchecked")
     public B channelFactory(ChannelFactory<? extends C> channelFactory) {
@@ -208,6 +223,7 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
      * Validate all the parameters. Sub-classes may override this, but should
      * call the super method in that case.
      */
+    //很明显，就是确认一下，参数是否已经初始化完成了
     @SuppressWarnings("unchecked")
     public B validate() {
         if (group == null) {
@@ -319,7 +335,9 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
     final ChannelFuture initAndRegister() {
         Channel channel = null;
         try {
+            // 利用工厂模式，创建管道
             channel = channelFactory.newChannel();
+            // 初始化管道
             init(channel);
         } catch (Throwable t) {
             if (channel != null) {
@@ -330,6 +348,7 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
             return new DefaultChannelPromise(channel, GlobalEventExecutor.INSTANCE).setFailure(t);
         }
 
+        // 将管道channel注册到EventLoopGroup中去，直接返回ChannelFuture
         ChannelFuture regFuture = config().group().register(channel);
         if (regFuture.cause() != null) {
             if (channel.isRegistered()) {
@@ -347,7 +366,7 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
         //    i.e. It's safe to attempt bind() or connect() now:
         //         because bind() or connect() will be executed *after* the scheduled registration task is executed
         //         because register(), bind(), and connect() are all bound to the same thread.
-
+        // 注册，绑定，链接，全都在一个线程里
         return regFuture;
     }
 
