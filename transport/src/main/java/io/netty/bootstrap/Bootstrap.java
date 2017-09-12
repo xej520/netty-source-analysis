@@ -280,6 +280,8 @@ public class Bootstrap extends AbstractBootstrap<Bootstrap, Channel> {
         });
     }
 
+    //初始化 ， 初始化都包括初始化哪些内容？
+    //1、
     @Override
     @SuppressWarnings("unchecked")
     void init(Channel channel) throws Exception {

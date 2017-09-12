@@ -19,16 +19,19 @@ import io.netty.util.ReferenceCountUtil;
 import io.netty.util.internal.TypeParameterMatcher;
 
 /**
+ * ChannelInboundHandlerAdapter 很明确，仅仅允许处理指定类型的消息
  * {@link ChannelInboundHandlerAdapter} which allows to explicit only handle a specific type of messages.
  *
+ * 例如，近处理String类型的handler
  * For example here is an implementation which only handle {@link String} messages.
  *
  * <pre>
+ *     //接收的类型是String类型
  *     public class StringHandler extends
  *             {@link SimpleChannelInboundHandler}&lt;{@link String}&gt; {
  *
  *         {@code @Override}
- *         protected void channelRead0({@link ChannelHandlerContext} ctx, {@link String} message)
+ *         protected void channelRead0({@link ChannelHandlerContext} ctx, {@link String} message)//String 消息类型
  *                 throws {@link Exception} {
  *             System.out.println(message);
  *         }
@@ -39,8 +42,10 @@ import io.netty.util.internal.TypeParameterMatcher;
  * {@link ReferenceCountUtil#release(Object)}. In this case you may need to use
  * {@link ReferenceCountUtil#retain(Object)} if you pass the object to the next handler in the {@link ChannelPipeline}.
  *
+ * 向前兼容的通知
  * <h3>Forward compatibility notice</h3>
  * <p>
+ *     请注意，在netty5.0中，channelRead0，方法名，将被重命名messageReceived
  * Please keep in mind that {@link #channelRead0(ChannelHandlerContext, I)} will be renamed to
  * {@code messageReceived(ChannelHandlerContext, I)} in 5.0.
  * </p>

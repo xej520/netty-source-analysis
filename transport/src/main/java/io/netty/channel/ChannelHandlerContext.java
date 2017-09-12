@@ -24,22 +24,28 @@ import io.netty.util.concurrent.EventExecutor;
 
 import java.nio.channels.Channels;
 
+//使得ChannelHandler 绑定到ChannelPipeline上去
+//
+
 /**
+ *
  * Enables a {@link ChannelHandler} to interact with its {@link ChannelPipeline}
  * and other handlers. Among other things a handler can notify the next {@link ChannelHandler} in the
  * {@link ChannelPipeline} as well as modify the {@link ChannelPipeline} it belongs to dynamically.
  *
  * <h3>Notify</h3>
- *
+ * 通过提供的很多方法中，你可以通知最近的handler，在同一个ChannelPipeline里
  * You can notify the closest handler in the same {@link ChannelPipeline} by calling one of the various methods
  * provided here.
  *
  * Please refer to {@link ChannelPipeline} to understand how an event flows.
- *
+ *  更新修改pipeline
  * <h3>Modifying a pipeline</h3>
- *
+ * 通过调用pipeline()方法，来获取你的handler所属于的ChannelPipeline
  * You can get the {@link ChannelPipeline} your handler belongs to by calling
- * {@link #pipeline()}.  A non-trivial application could insert, remove, or
+ * {@link #pipeline()}.
+ * 好像是说，Netty支持在运行时，动态的添加，移除，取代handler，在一个应用上
+ * A non-trivial application could insert, remove, or
  * replace handlers in the pipeline dynamically at runtime.
  *
  * <h3>Retrieving for later use</h3>
@@ -70,7 +76,7 @@ import java.nio.channels.Channels;
  * ways to manage stateful information.
  *
  * <h3>A handler can have more than one context</h3>
- *
+ * 也就是说，一个handler，可能有多个ChannelContext的
  * Please note that a {@link ChannelHandler} instance can be added to more than
  * one {@link ChannelPipeline}.  It means a single {@link ChannelHandler}
  * instance can have more than one {@link ChannelHandlerContext} and therefore
@@ -122,6 +128,8 @@ import java.nio.channels.Channels;
  * what fundamental differences they have, how they flow in a  pipeline,  and how to handle
  * the operation in your application.
  */
+//通过ChannelHandlerContext 可以获得Channel，ChannelHandler，ChannelPipeline
+// 也就是说，通过ChannelHandlerContext 是Channel，ChannelHandler，ChannelPipeline的桥梁
 public interface ChannelHandlerContext extends AttributeMap, ChannelInboundInvoker, ChannelOutboundInvoker {
 
     /**
