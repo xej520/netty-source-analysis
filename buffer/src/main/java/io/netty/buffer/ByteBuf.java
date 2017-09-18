@@ -272,6 +272,7 @@ public abstract class ByteBuf implements ReferenceCounted, Comparable<ByteBuf> {
     /**
      * Returns the {@link ByteBufAllocator} which created this buffer.
      */
+    //返回创建自己的ByteBufAllocator
     public abstract ByteBufAllocator alloc();
 
     /**

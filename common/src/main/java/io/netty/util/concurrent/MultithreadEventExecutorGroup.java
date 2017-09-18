@@ -33,6 +33,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Abstract base class for {@link EventExecutorGroup} implementations that handles their tasks with multiple threads at
  * the same time.
  */
+// 也就是说，在同一时间，多线程/并发的方式 去处理EventExecutor
+// 从类名来看，MultithreadEventExecutorGroup有并行（多线程）分配小弟去干活的能力，换句话说，每个小弟都工作在自己的线程中
 public abstract class MultithreadEventExecutorGroup extends AbstractEventExecutorGroup {
 
     private static final Logger logger = LoggerFactory.getLogger(MultithreadEventExecutorGroup.class);
@@ -86,6 +88,7 @@ public abstract class MultithreadEventExecutorGroup extends AbstractEventExecuto
         }
 
         //注意，这里，仅仅是声明，并没有初始化哦
+        // 线程数量 规定好了
         children = new EventExecutor[nThreads];
 
         //批量循环初始化数组children哦

@@ -111,6 +111,9 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
             throw new NullPointerException("channelClass");
         }
         //ReflectiveChannelFactory 没什么，最核心的就是以反射的方式，来创建对象
+        // 默认使用的是ReflectiveChannelFactory 来实现的
+        // 记住不同的netty版本，可能使用的channel默认工厂 可能不是同一个类
+        // 还有BootstrapChannelFactory 默认工厂
         return channelFactory(new ReflectiveChannelFactory<C>(channelClass));
     }
 

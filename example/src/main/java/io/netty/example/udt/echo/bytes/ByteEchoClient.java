@@ -35,6 +35,10 @@ import java.util.concurrent.ThreadFactory;
  * between the echo client and server by sending the first message to the
  * server.
  */
+//链接建立后，发送信息
+//实现功能是，客户端与服务器端 之间 来回的发送接收消息
+
+
 public final class ByteEchoClient {
 
     static final String HOST = System.getProperty("host", "127.0.0.1");

@@ -78,6 +78,9 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
         this.parent = parent;
         id = newId();
         unsafe = newUnsafe();
+        // 你要能够从这些代码中，看出一些规则来，不是单纯的看代码，
+        // 很明显，这里是说
+        // Channel 在实例化的时候，自动关联了pipeline
         pipeline = newChannelPipeline();
     }
 

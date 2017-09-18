@@ -23,8 +23,14 @@ import java.nio.channels.WritableByteChannel;
 import java.util.Map;
 
 /**
+ * 关于管道Channel的 一些 属性配置
+ *
  * A set of configuration properties of a {@link Channel}.
  * <p>
+ *     向下转型，可以指定更多的配置类型，如SocketChannelConfig
+ *     或者使用
+ *     setOptions(Map)进行设定 传输 属性
+ *
  * Please down-cast to more specific configuration type such as
  * {@link SocketChannelConfig} or use {@link #setOptions(Map)} to set the
  * transport-specific properties:
@@ -61,12 +67,16 @@ import java.util.Map;
  * More options are available in the sub-types of {@link ChannelConfig}.  For
  * example, you can configure the parameters which are specific to a TCP/IP
  * socket as explained in {@link SocketChannelConfig}.
+ *
+ * 更多的属性配置，你可以使用ChannelConfig的子类，如SocketChannelConfig，
+ * SocketChannelConfig 可以指定TCP/IP的socket
  */
 public interface ChannelConfig {
 
     /**
      * Return all set {@link ChannelOption}'s.
      */
+    //返回ChannelOption的所有属性
     Map<ChannelOption<?>, Object> getOptions();
 
     /**
@@ -118,6 +128,7 @@ public interface ChannelConfig {
      * @param connectTimeoutMillis the connect timeout in milliseconds.
      *                             {@code 0} to disable.
      */
+    //设定超时时间
     ChannelConfig setConnectTimeoutMillis(int connectTimeoutMillis);
 
     /**
@@ -228,6 +239,7 @@ public interface ChannelConfig {
     ChannelConfig setWriteBufferHighWaterMark(int writeBufferHighWaterMark);
 
     /**
+     * 写缓冲区的最低位置
      * Returns the low water mark of the write buffer.  Once the number of bytes
      * queued in the write buffer exceeded the
      * {@linkplain #setWriteBufferHighWaterMark(int) high water mark} and then
@@ -256,12 +268,14 @@ public interface ChannelConfig {
      * Set the {@link MessageSizeEstimator} which is used for the channel
      * to detect the size of a message.
      */
+    //管道检测消息的大小
     ChannelConfig setMessageSizeEstimator(MessageSizeEstimator estimator);
 
     /**
      * Returns the {@link WriteBufferWaterMark} which is used for setting the high and low
      * water mark of the write buffer.
      */
+    //主要是获取写缓冲区的最大值，与最小值
     WriteBufferWaterMark getWriteBufferWaterMark();
 
     /**

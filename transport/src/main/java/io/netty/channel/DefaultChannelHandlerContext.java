@@ -17,6 +17,7 @@ package io.netty.channel;
 
 import io.netty.util.concurrent.EventExecutor;
 
+// final 修饰的类，不能被继承
 final class DefaultChannelHandlerContext extends AbstractChannelHandlerContext {
 
     private final ChannelHandler handler;

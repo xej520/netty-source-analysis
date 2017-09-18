@@ -29,6 +29,9 @@ import static io.netty.util.concurrent.AbstractEventExecutor.*;
 /**
  * Abstract base class for {@link EventExecutorGroup} implementations.
  */
+// 跟EventExecutor 一样，是EventExecutorGroup 的子类
+// 但大部分实现都只是调用了next()拿到一个EventExecutor,
+// 然后后再调用EventExecutor的相应方法
 public abstract class AbstractEventExecutorGroup implements EventExecutorGroup {
     @Override
     public Future<?> submit(Runnable task) {

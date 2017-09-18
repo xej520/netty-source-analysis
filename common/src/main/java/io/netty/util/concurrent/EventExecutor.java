@@ -23,6 +23,8 @@ package io.netty.util.concurrent;
  * way to access methods.
  *
  */
+// EventExecutor 是 EventExecutorGroup的子类，
+// EventExecutorGroup 管理着 EventExecutor,就像是一个boss， 每当有活的时候，就派一个小弟(EventExecutor)去干
 public interface EventExecutor extends EventExecutorGroup {
 
     /**
@@ -45,6 +47,7 @@ public interface EventExecutor extends EventExecutorGroup {
      * Return {@code true} if the given {@link Thread} is executed in the event loop,
      * {@code false} otherwise.
      */
+    //如果给定的线程，正在事件循环中的话，就返回true，否则，返回的是false
     boolean inEventLoop(Thread thread);
 
     /**

@@ -23,6 +23,10 @@ import java.util.Map;
 /**
  * Skeleton implementation of a {@link ChannelHandler}.
  */
+//ChannelHandlerAdapter 应该是基本上 什么也做，
+// 添加了一个属性added,
+// 一个注解
+//
 public abstract class ChannelHandlerAdapter implements ChannelHandler {
 
     // Not using volatile because it's used only for a sanity check.
@@ -34,7 +38,9 @@ public abstract class ChannelHandlerAdapter implements ChannelHandler {
      */
     public boolean isSharable() {
         /**
-         * Cache the result of {@link Sharable} annotation detection to workaround a condition. We use a
+         * Cache the result of {@link Sharable} annotation detection to workaround a condition.
+         * 缓存注解@Sharable检测的结果
+         * We use a
          * {@link ThreadLocal} and {@link WeakHashMap} to eliminate the volatile write/reads. Using different
          * {@link WeakHashMap} instances per {@link Thread} is good enough for us and the number of
          * {@link Thread}s are quite limited anyway.
@@ -72,6 +78,7 @@ public abstract class ChannelHandlerAdapter implements ChannelHandler {
      * to the next {@link ChannelHandler} in the {@link ChannelPipeline}.
      *
      * Sub-classes may override this method to change behavior.
+     * 子类可以覆盖 此方法
      */
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {

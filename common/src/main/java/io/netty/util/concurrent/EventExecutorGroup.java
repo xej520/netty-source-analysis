@@ -27,6 +27,10 @@ import java.util.concurrent.TimeUnit;
  * life-cycle and allows shutting them down in a global fashion.
  *
  */
+//EventExecutorGroup 继承了ScheduledExecutorService，因此，它可以调度执行task
+//EventExecutorGroup 主要是为EventEexecutor服务的，提供线程池的关闭，提供线程池
+//EventExecutorGroup 父类就是java的地盘了
+//
 public interface EventExecutorGroup extends ScheduledExecutorService, Iterable<EventExecutor> {
 
     /**
@@ -81,6 +85,8 @@ public interface EventExecutorGroup extends ScheduledExecutorService, Iterable<E
     /**
      * Returns one of the {@link EventExecutor}s managed by this {@link EventExecutorGroup}.
      */
+    // 内部管理着多个EventExecutor, 通过next()方法，返回其中的一个
+    // EventExecutor 也是 EventExecutorGroup的子类
     EventExecutor next();
 
     @Override

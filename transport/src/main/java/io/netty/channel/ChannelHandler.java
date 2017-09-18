@@ -212,6 +212,7 @@ public interface ChannelHandler {
     /**
      * Gets called after the {@link ChannelHandler} was added to the actual context and it's ready to handle events.
      */
+    //添加
     void handlerAdded(ChannelHandlerContext ctx) throws Exception;
 
     /**
@@ -233,6 +234,9 @@ public interface ChannelHandler {
      * can be added to one or more {@link ChannelPipeline}s multiple times
      * without a race condition.
      * <p>
+     *
+     *  如果这个注解没有使用的话，你必须每次创建一个新的handler实例，添加到pipeline里，因为，handler并没有
+     *  共享状态，如成员属性
      * If this annotation is not specified, you have to create a new handler
      * instance every time you add it to a pipeline because it has unshared
      * state such as member variables.

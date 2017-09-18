@@ -20,15 +20,21 @@ import java.net.SocketAddress;
 /**
  * {@link ChannelHandler} which will get notified for IO-outbound-operations.
  */
+// ChannelOutboundHandler 是ChannelHandler的一种形式，具有什么特点呢？
+// 针对的是 IO事件的 outbound 操作
+
+ //   ChannelOutboundHandler 主要提供的操作有
+//    IP绑定、链接的建立与取消、注销掉注册、读写操作、刷新操作
 public interface ChannelOutboundHandler extends ChannelHandler {
     /**
      * Called once a bind operation is made.
      *
-     * @param ctx           the {@link ChannelHandlerContext} for which the bind operation is made
-     * @param localAddress  the {@link SocketAddress} to which it should bound
-     * @param promise       the {@link ChannelPromise} to notify once the operation completes
+     * @param ctx           the {@link ChannelHandlerContext} for which the bind operation is made  绑定
+     * @param localAddress  the {@link SocketAddress} to which it should bound     对localAddress进行绑定
+     * @param promise       the {@link ChannelPromise} to notify once the operation completes  绑定完成后，会将结果，通知在这里
      * @throws Exception    thrown if an error accour
      */
+    // 绑定操作
     void bind(ChannelHandlerContext ctx, SocketAddress localAddress, ChannelPromise promise) throws Exception;
 
     /**
@@ -40,6 +46,7 @@ public interface ChannelOutboundHandler extends ChannelHandler {
      * @param promise           the {@link ChannelPromise} to notify once the operation completes
      * @throws Exception        thrown if an error accour
      */
+    // 链接建立
     void connect(
             ChannelHandlerContext ctx, SocketAddress remoteAddress,
             SocketAddress localAddress, ChannelPromise promise) throws Exception;
@@ -51,6 +58,7 @@ public interface ChannelOutboundHandler extends ChannelHandler {
      * @param promise           the {@link ChannelPromise} to notify once the operation completes
      * @throws Exception        thrown if an error accour
      */
+    // 取消链接
     void disconnect(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception;
 
     /**
@@ -69,6 +77,7 @@ public interface ChannelOutboundHandler extends ChannelHandler {
      * @param promise           the {@link ChannelPromise} to notify once the operation completes
      * @throws Exception        thrown if an error accour
      */
+    // 注册 注销
     void deregister(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception;
 
     /**
@@ -77,8 +86,16 @@ public interface ChannelOutboundHandler extends ChannelHandler {
     void read(ChannelHandlerContext ctx) throws Exception;
 
     /**
-    * Called once a write operation is made. The write operation will write the messages through the
-     * {@link ChannelPipeline}. Those are then ready to be flushed to the actual {@link Channel} once
+    *  Called once a write operation is made.
+     *
+     * 通过ChannelPipeline对消息进行写的
+     *
+     * The write operation will write the messages through the
+     * {@link ChannelPipeline}.
+     *
+     * 一旦调用管道Channel的flush()方法，就会将数据刷到实际的管道Channel中去
+     *
+     * Those are then ready to be flushed to the actual {@link Channel} once
      * {@link Channel#flush()} is called
      *
      * @param ctx               the {@link ChannelHandlerContext} for which the write operation is made
@@ -91,6 +108,9 @@ public interface ChannelOutboundHandler extends ChannelHandler {
     /**
      * Called once a flush operation is made. The flush operation will try to flush out all previous written messages
      * that are pending.
+     *
+     * 刷新操作
+     * 刷新操作，会尝试，将以前所有写的消息刷新到管道中去
      *
      * @param ctx               the {@link ChannelHandlerContext} for which the flush operation is made
      * @throws Exception        thrown if an error accour
