@@ -71,11 +71,15 @@ public abstract class ChannelInitializer<C extends Channel> extends ChannelInbou
     @Override
     @SuppressWarnings("unchecked")
     public final void channelRegistered(ChannelHandlerContext ctx) throws Exception {
+        //ChannelInitializer在channelRegistered事件触发后会调用initChannel()方法，随后把自己从Pipeline里删除
+
         // Normally this method will never be called as handlerAdded(...) should call initChannel(...) and remove
         // the handler.
+        // 调用initChannel()
         if (initChannel(ctx)) {
             // we called initChannel(...) so we need to call now pipeline.fireChannelRegistered() to ensure we not
             // miss an event.
+            // 从Pipeline里删除
             ctx.pipeline().fireChannelRegistered();
         } else {
             // Called initChannel(...) before which is the expected behavior, so just forward the event.
