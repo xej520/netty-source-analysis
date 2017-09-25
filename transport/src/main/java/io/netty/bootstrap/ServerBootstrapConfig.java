@@ -21,6 +21,8 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.ServerChannel;
 import io.netty.util.AttributeKey;
 import io.netty.util.internal.StringUtil;
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
 
 import java.util.Map;
 
@@ -28,9 +30,10 @@ import java.util.Map;
  * Exposes the configuration of a {@link ServerBootstrapConfig}.
  */
 public final class ServerBootstrapConfig extends AbstractBootstrapConfig<ServerBootstrap, ServerChannel> {
-
+    private static final InternalLogger logger = InternalLoggerFactory.getInstance(ServerBootstrapConfig.class);
     ServerBootstrapConfig(ServerBootstrap bootstrap) {
         super(bootstrap);
+        logger.info("------创建一个对象的过程----先加载静态属性----静态代码块-----");
     }
 
     /**

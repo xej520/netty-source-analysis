@@ -82,6 +82,7 @@ public abstract class MultithreadEventExecutorGroup extends AbstractEventExecuto
         }
 
         logger.info("--->executor=\t" + executor);
+        //如果用户没有指定executor的话，就先默认指定一下executor
         if (executor == null) {
             logger.info("--->newDefaultThreadFactory=\t" + executor);
             executor = new ThreadPerTaskExecutor(newDefaultThreadFactory());
@@ -90,7 +91,6 @@ public abstract class MultithreadEventExecutorGroup extends AbstractEventExecuto
         //注意，这里，仅仅是声明，并没有初始化哦
         // 线程数量 规定好了
         children = new EventExecutor[nThreads];
-
         //批量循环初始化数组children哦
         for (int i = 0; i < nThreads; i ++) {
             boolean success = false;  //默认为false

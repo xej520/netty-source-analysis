@@ -220,10 +220,11 @@ public interface Channel extends AttributeMap, ChannelOutboundInvoker, Comparabl
     Channel flush();
 
     /**
+     * Unsafe操作 是专门针对IO线程，以及实际传输的，并非用户业务的
      * <em>Unsafe</em> operations that should <em>never</em> be called from user-code. These methods
      * are only provided to implement the actual transport, and must be invoked from an I/O thread except for the
      * following methods:
-     * <ul>
+     * <ul> 下面的方法，不会调用Unsafe
      *   <li>{@link #invoker()}</li>
      *   <li>{@link #localAddress()}</li>
      *   <li>{@link #remoteAddress()}</li>

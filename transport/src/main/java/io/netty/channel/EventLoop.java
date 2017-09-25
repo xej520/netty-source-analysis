@@ -18,6 +18,8 @@ package io.netty.channel;
 import io.netty.util.concurrent.OrderedEventExecutor;
 
 /**
+ * 对注册过的管道，处理所有的IO操作事件
+ * 继承了EventLoopGroup接口，可以被认为是一个single的线程池
  * Will handle all the I/O operations for a {@link Channel} once registered.
  *
  * One {@link EventLoop} instance will usually handle more than one {@link Channel} but this may depend on

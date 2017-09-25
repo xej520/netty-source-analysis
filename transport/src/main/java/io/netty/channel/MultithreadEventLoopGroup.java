@@ -30,11 +30,11 @@ import java.util.concurrent.ThreadFactory;
  * the same time.
  */
 public abstract class MultithreadEventLoopGroup extends MultithreadEventExecutorGroup implements EventLoopGroup {
-
+    // 静态属性，只要类一加载，都会默默的执行一次的
     private static final InternalLogger logger = InternalLoggerFactory.getInstance(MultithreadEventLoopGroup.class);
 
     private static final int DEFAULT_EVENT_LOOP_THREADS;
-
+    // 静态代码块，也是，加载类的时候，也会加载这个的
     static {
         //可见在NioEventLoopGroup的父类MultithreadEventLoopGroup里，初始化了
         //默认线程的数量

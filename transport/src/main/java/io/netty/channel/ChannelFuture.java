@@ -25,12 +25,20 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * The result of an asynchronous {@link Channel} I/O operation.
+ * Channel 的 IO操作的结果
  * <p>
- * All I/O operations in Netty are asynchronous.  It means any I/O calls will
+ * All I/O operations in Netty are asynchronous.
+ * 所有的IO操作，在netty里都是异步的
+ * It means any I/O calls will
  * return immediately with no guarantee that the requested I/O operation has
- * been completed at the end of the call.  Instead, you will be returned with
+ * been completed at the end of the call.
+ * 意味着，任何的IO调用会里面返回一个结果，此结果是没有保障的，
+ *
+ * Instead, you will be returned with
  * a {@link ChannelFuture} instance which gives you the information about the
  * result or status of the I/O operation.
+ * 你会立刻得到一个ChannelFuture实例，此实例代表的信息有IO操作的结果，或者状态
+ *
  * <p>
  * A {@link ChannelFuture} is either <em>uncompleted</em> or <em>completed</em>.
  * When an I/O operation begins, a new future object is created.  The new future
@@ -40,7 +48,10 @@ import java.util.concurrent.TimeUnit;
  * marked as completed with more specific information, such as the cause of the
  * failure.  Please note that even failure and cancellation belong to the
  * completed state.
+ *
  * <pre>
+ *     下面的图，很形象了说明了两种状态，IO操作未完成时ChannelFuture,的状态，以及IO操作完成时的状态
+ *
  *                                      +---------------------------+
  *                                      | Completed successfully    |
  *                                      +---------------------------+
@@ -63,6 +74,8 @@ import java.util.concurrent.TimeUnit;
  * completed, wait for the completion, and retrieve the result of the I/O
  * operation. It also allows you to add {@link ChannelFutureListener}s so you
  * can get notified when the I/O operation is completed.
+ *  很明显，你可以添加ChannelFutureListener，当IO操作完成的时候，会通知ChannelFutureListener
+ *  这里，体现了，事件驱动
  *
  * <h3>Prefer {@link #addListener(GenericFutureListener)} to {@link #await()}</h3>
  *
@@ -70,7 +83,7 @@ import java.util.concurrent.TimeUnit;
  * {@link #await()} wherever possible to get notified when an I/O operation is
  * done and to do any follow-up tasks.
  * <p>
- * {@link #addListener(GenericFutureListener)} is non-blocking.  It simply adds
+ * {@link #addListener(GenericFutureListener)} is non-blocking（非阻塞模式）.  It simply adds
  * the specified {@link ChannelFutureListener} to the {@link ChannelFuture}, and
  * I/O thread will notify the listeners when the I/O operation associated with
  * the future is done.  {@link ChannelFutureListener} yields the best
@@ -78,22 +91,25 @@ import java.util.concurrent.TimeUnit;
  * it could be tricky to implement a sequential logic if you are not used to
  * event-driven programming.
  * <p>
- * By contrast, {@link #await()} is a blocking operation.  Once called, the
- * caller thread blocks until the operation is done.  It is easier to implement
+ * By contrast, {@link #await()} is a blocking operation（阻塞模式）.  Once called, the
+ * caller thread blocks until the operation is done.(一旦调用，调用线程就会阻塞这里，直到IO操作完成)
+ * It is easier to implement
  * a sequential logic with {@link #await()}, but the caller thread blocks
  * unnecessarily until the I/O operation is done and there's relatively
  * expensive cost of inter-thread notification.  Moreover, there's a chance of
  * dead lock in a particular circumstance, which is described below.
  *
  * <h3>Do not call {@link #await()} inside {@link ChannelHandler}</h3>
+ * 不要在ChannelHandler里调用await()
  * <p>
  * The event handler methods in {@link ChannelHandler} are usually called by
  * an I/O thread.  If {@link #await()} is called by an event handler
  * method, which is called by the I/O thread, the I/O operation it is waiting
  * for might never complete because {@link #await()} can block the I/O
  * operation it is waiting for, which is a dead lock.
+ * 因为，导致死锁，因此，不要在ChannelHandler里调用await()
  * <pre>
- * // BAD - NEVER DO THIS
+ * // BAD - NEVER DO THIS  不要这么做哦
  * {@code @Override}
  * public void channelRead({@link ChannelHandlerContext} ctx, Object msg) {
  *     {@link ChannelFuture} future = ctx.channel().close();
@@ -106,6 +122,7 @@ import java.util.concurrent.TimeUnit;
  * {@code @Override}
  * public void channelRead({@link ChannelHandlerContext} ctx, Object msg) {
  *     {@link ChannelFuture} future = ctx.channel().close();
+ *     //给future添加一个监听器
  *     future.addListener(new {@link ChannelFutureListener}() {
  *         public void operationComplete({@link ChannelFuture} future) {
  *             // Perform post-closure operation

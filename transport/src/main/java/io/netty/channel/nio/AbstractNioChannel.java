@@ -83,9 +83,15 @@ public abstract class AbstractNioChannel extends AbstractChannel {
     protected AbstractNioChannel(Channel parent, SelectableChannel ch, int readInterestOp) {
         super(parent);
         this.ch = ch;
+        //对readInterestOp赋值
+        //Channel注册到Selector有两种方式, 一种是调用Channel的register方法，
+        //第二种是设置SelectionKey的interestOps的值
+        //netty是用了第二种方式，通过设置SelectionKey的interestOps来注册Channel关心的事情，把实际的注册延迟了
         this.readInterestOp = readInterestOp;
         try {
+            //然后设置了channel为非阻塞模式
             ch.configureBlocking(false);
+            //到此为止，channel创建完成了
         } catch (IOException e) {
             try {
                 ch.close();

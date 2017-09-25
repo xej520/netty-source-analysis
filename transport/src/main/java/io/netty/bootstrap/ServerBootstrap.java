@@ -47,7 +47,12 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
 
     // 记录日常日志等错误，InternalLoggerFactory 使用了java的放射机制 和 工厂模式
     private static final InternalLogger logger = InternalLoggerFactory.getInstance(ServerBootstrap.class);
-
+    static {
+        logger.info("------测试----子类---ServerBootstrap---静态代码块------");
+    }
+    public static void show() {
+        logger.info("------测试----子类---ServerBootstrap---静态方法------");
+    }
     //netty4.0 引入了ChannelOption的新类型，它提供了类型安全地访问socket选项
     //ChannelOption class内部就是socket套接字配置参数，例如SO_KEEPALIVE
     private final Map<ChannelOption<?>, Object> childOptions = new LinkedHashMap<ChannelOption<?>, Object>();

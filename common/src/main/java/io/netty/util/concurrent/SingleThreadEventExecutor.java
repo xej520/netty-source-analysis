@@ -95,6 +95,7 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
 
     private final Queue<Runnable> taskQueue;
 
+    // 此字段就代表了与SingleThreadEventExecutor关联的本地线程
     private volatile Thread thread;
     @SuppressWarnings("unused")
     private volatile ThreadProperties threadProperties;
@@ -219,6 +220,7 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
     }
 
     protected final Runnable pollTaskFrom(Queue<Runnable> taskQueue) {
+        //死循环的，从队列中不断的取出IO事件，
         for (;;) {
             Runnable task = taskQueue.poll();
             if (task == WAKEUP_TASK) {
@@ -229,6 +231,7 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
     }
 
     /**
+     * 从队列中不断的取出线程，如果此时不存在task的话，就会阻塞在这里的
      * Take the next {@link Runnable} from the task queue and so will block if no task is currently present.
      * <p>
      * Be aware that this method will throw an {@link UnsupportedOperationException} if the task queue, which was
@@ -244,6 +247,7 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
         }
 
         BlockingQueue<Runnable> taskQueue = (BlockingQueue<Runnable>) this.taskQueue;
+        // 死循环的遍历
         for (;;) {
             ScheduledFutureTask<?> scheduledTask = peekScheduledTask();
             if (scheduledTask == null) {
@@ -434,7 +438,6 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
                 break;
             }
         }
-
         afterRunningAllTasks();
         this.lastExecutionTime = lastExecutionTime;
         return true;
@@ -453,7 +456,6 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
         if (scheduledTask == null) {
             return SCHEDULE_PURGE_INTERVAL;
         }
-
         return scheduledTask.delayNanos(currentTimeNanos);
     }
 

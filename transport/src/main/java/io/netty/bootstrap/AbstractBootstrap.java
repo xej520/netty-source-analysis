@@ -30,6 +30,8 @@ import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.EventExecutor;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import io.netty.util.internal.StringUtil;
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -52,6 +54,13 @@ import java.util.Map;
 // Object类里的clone方法 仅仅用于浅拷贝)
 //浅拷贝，仅仅拷贝基本成员属性，对于引用类型仅返回指向该地址的引用
 public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C extends Channel> implements Cloneable {
+    private static final InternalLogger logger = InternalLoggerFactory.getInstance(AbstractBootstrap.class);
+    static {
+        logger.info("------测试----父类---AbstractBootstrap---静态代码块------");
+    }
+    public static void show() {
+        logger.info("------测试----父类---AbstractBootstrap---静态方法------");
+    }
 
     //volatile: 一旦一个共享变量（类的成员变量，类的静态变量）被volatile修饰之后，就具备了下面的特性
     //1、保证了不同线程对这个变量进行操作时的可见性，即一个线程修改了某个变量的值，其他线程会立刻知道，
@@ -59,6 +68,8 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
     @SuppressWarnings("deprecation")
     private volatile ChannelFactory<? extends C> channelFactory;
     private volatile SocketAddress localAddress;
+    //options 这里存储的是，就是用户在netty服务端，设定的属性，如
+    //ChannelOption.SO_BACKLOG, 128,以及，ChannelOption.SO_KEEPALIVE, true
     private final Map<ChannelOption<?>, Object> options = new LinkedHashMap<ChannelOption<?>, Object>();
     private final Map<AttributeKey<?>, Object> attrs = new LinkedHashMap<AttributeKey<?>, Object>();
     //private说明，此handler只能在本类内使用，外部对象无法调用的
@@ -269,6 +280,7 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
 
     /**
      * Create a new {@link Channel} and bind it.
+     * 创建一个channel，并bind绑定
      */
     public ChannelFuture bind(int inetPort) {
         return bind(new InetSocketAddress(inetPort));
@@ -300,6 +312,7 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
     }
 
     private ChannelFuture doBind(final SocketAddress localAddress) {
+        //初始化，并注册
         final ChannelFuture regFuture = initAndRegister();
         final Channel channel = regFuture.channel();
         if (regFuture.cause() != null) {
@@ -351,7 +364,7 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
             return new DefaultChannelPromise(channel, GlobalEventExecutor.INSTANCE).setFailure(t);
         }
 
-        // 将管道channel注册到EventLoopGroup中去，直接返回ChannelFuture
+        // 将初始化完成的管道channel注册到EventLoopGroup中去，直接返回ChannelFuture
         ChannelFuture regFuture = config().group().register(channel);
         if (regFuture.cause() != null) {
             if (channel.isRegistered()) {
