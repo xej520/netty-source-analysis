@@ -28,7 +28,7 @@ import java.net.SocketAddress;
 
 
 /**
- * IO操作，如 读、写、连接、绑定的套接字 或者 组件
+ * Channel 就是一个网络套接字 或者 组件，主要作用就是提供IO操作，如 读、写、连接、绑定
  * A nexus to a network socket or a component which is capable of I/O
  * operations such as read, write, connect, and bind.
  * <p>
@@ -81,6 +81,7 @@ import java.net.SocketAddress;
  */
 //很明显，下面是重新声明了一个Channel，
     //因此，netty里的Channel是不同于NIO里的Channel的
+    // 是客户端与服务器端进行网络通信，进行信息传输的通道
 public interface Channel extends AttributeMap, ChannelOutboundInvoker, Comparable<Channel> {
 
     /**

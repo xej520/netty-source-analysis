@@ -46,20 +46,29 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  * Abstract base class for {@link OrderedEventExecutor}'s that execute all its submitted tasks in a single thread.
  *
  */
+//使用一个线程，来执行所有的提交任务
+//    SingleThreadEventExecutor
+// 主要还是对线程的管理
 public abstract class SingleThreadEventExecutor extends AbstractScheduledEventExecutor implements OrderedEventExecutor {
 
+    //默认的线程数量
     static final int DEFAULT_MAX_PENDING_EXECUTOR_TASKS = Math.max(16,
             SystemPropertyUtil.getInt("io.netty.eventexecutor.maxPendingTasks", Integer.MAX_VALUE));
 
     private static final InternalLogger logger =
             InternalLoggerFactory.getInstance(SingleThreadEventExecutor.class);
 
-    private static final int ST_NOT_STARTED = 1;
-    private static final int ST_STARTED = 2;
-    private static final int ST_SHUTTING_DOWN = 3;
-    private static final int ST_SHUTDOWN = 4;
-    private static final int ST_TERMINATED = 5;
+    //下面是，定义了一些 状态常量
+    private static final int ST_NOT_STARTED = 1;//not_started
+    private static final int ST_STARTED = 2;//started
+    private static final int ST_SHUTTING_DOWN = 3;//shutting_down
+    private static final int ST_SHUTDOWN = 4;//shutdown
+    private static final int ST_TERMINATED = 5;//terminated
 
+    //应该是一种 标志位吧
+    //应该是队列里，会有不同类型的线程
+    //如果从队列里取到的是WAKEUP_TASK、NOOP_TASK
+    //类型的线程的话，是一种事件标志位
     private static final Runnable WAKEUP_TASK = new Runnable() {
         @Override
         public void run() {
@@ -93,16 +102,20 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
         PROPERTIES_UPDATER = propertiesUpdater;
     }
 
+    //声明了一个 线程队列
     private final Queue<Runnable> taskQueue;
 
     // 此字段就代表了与SingleThreadEventExecutor关联的本地线程
+    //volatile 表示，
     private volatile Thread thread;
     @SuppressWarnings("unused")
     private volatile ThreadProperties threadProperties;
     private final Executor executor;
     private volatile boolean interrupted;
 
+    //创建了一个信号量
     private final Semaphore threadLock = new Semaphore(0);
+    //线程集合，
     private final Set<Runnable> shutdownHooks = new LinkedHashSet<Runnable>();
     private final boolean addTaskWakesUp;
     private final int maxPendingTasks;
@@ -195,6 +208,8 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
      * calls on the this {@link Queue} it may make sense to {@code @Override} this and return some more performant
      * implementation that does not support blocking operations at all.
      */
+    //创建一个队列
+    //底层是 链表阻塞队列
     protected Queue<Runnable> newTaskQueue(int maxPendingTasks) {
         return new LinkedBlockingQueue<Runnable>(maxPendingTasks);
     }
@@ -202,6 +217,9 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
     /**
      * Interrupt the current running {@link Thread}.
      */
+    //线程的中断
+    //底层 依旧调用的是java 原生的方法
+    // 也就是再次封装
     protected void interruptThread() {
         Thread currentThread = thread;
         if (currentThread == null) {
@@ -214,6 +232,7 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
     /**
      * @see {@link Queue#poll()}
      */
+    //其实，就是从队列里，取出一个线程来
     protected Runnable pollTask() {
         assert inEventLoop();
         return pollTaskFrom(taskQueue);
@@ -223,6 +242,8 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
         //死循环的，从队列中不断的取出IO事件，
         for (;;) {
             Runnable task = taskQueue.poll();
+            //如果从队列里，取出的线程类型，刚好是WAKEUP_TASK
+            //的话，就继续 取
             if (task == WAKEUP_TASK) {
                 continue;
             }
@@ -240,12 +261,14 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
      *
      * @return {@code null} if the executor thread has been interrupted or waken up.
      */
+    //取出事件
     protected Runnable takeTask() {
         assert inEventLoop();
+        //也就是说，如果队列不是阻塞队列的话，就会抛UnsupportedOperationException异常
         if (!(taskQueue instanceof BlockingQueue)) {
             throw new UnsupportedOperationException();
         }
-
+        //强制类型转换，转换为阻塞队列
         BlockingQueue<Runnable> taskQueue = (BlockingQueue<Runnable>) this.taskQueue;
         // 死循环的遍历
         for (;;) {
@@ -492,6 +515,7 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
 
     @Override
     public boolean inEventLoop(Thread thread) {
+        logger.info("-----inEventLoop方法----:\t" + (thread == this.thread));
         return thread == this.thread;
     }
 

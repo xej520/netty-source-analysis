@@ -41,6 +41,10 @@ import java.util.concurrent.RejectedExecutionException;
  * The default {@link ChannelPipeline} implementation.  It is usually created
  * by a {@link Channel} implementation when the {@link Channel} is created.
  */
+//DefaultChannelPipeline是ChannelPipeline的具体实现
+//
+
+
 public class DefaultChannelPipeline implements ChannelPipeline {
 
     static final InternalLogger logger = InternalLoggerFactory.getInstance(DefaultChannelPipeline.class);
@@ -56,6 +60,7 @@ public class DefaultChannelPipeline implements ChannelPipeline {
         }
     };
 
+    //head, tail 链表的表现形式
     final AbstractChannelHandlerContext head;
     final AbstractChannelHandlerContext tail;
 
@@ -1029,6 +1034,7 @@ public class DefaultChannelPipeline implements ChannelPipeline {
 
     @Override
     public final ChannelFuture writeAndFlush(Object msg) {
+        logger.info("--------DefaultChannelPipeline--------");
         return tail.writeAndFlush(msg);
     }
 

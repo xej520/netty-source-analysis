@@ -39,10 +39,14 @@ public abstract class MultithreadEventExecutorGroup extends AbstractEventExecuto
 
     private static final Logger logger = LoggerFactory.getLogger(MultithreadEventExecutorGroup.class);
 
+    //线程池，数组形式可知为  固定线程池
     private final EventExecutor[] children;
     private final Set<EventExecutor> readonlyChildren;
+    //终止的线程个数
     private final AtomicInteger terminatedChildren = new AtomicInteger();
+    //线程池终止时的异步结果
     private final Promise<?> terminationFuture = new DefaultPromise(GlobalEventExecutor.INSTANCE);
+    //线程 选择器
     private final EventExecutorChooserFactory.EventExecutorChooser chooser;
 
     /**
@@ -84,7 +88,6 @@ public abstract class MultithreadEventExecutorGroup extends AbstractEventExecuto
         logger.info("--->executor=\t" + executor);
         //如果用户没有指定executor的话，就先默认指定一下executor
         if (executor == null) {
-            logger.info("--->newDefaultThreadFactory=\t" + executor);
             executor = new ThreadPerTaskExecutor(newDefaultThreadFactory());
         }
 
@@ -125,6 +128,7 @@ public abstract class MultithreadEventExecutorGroup extends AbstractEventExecuto
             }
         }
 
+        //对线程选择器 进行初始化
         chooser = chooserFactory.newChooser(children);
 
         final FutureListener<Object> terminationListener = new FutureListener<Object>() {

@@ -40,7 +40,8 @@ public abstract class MultithreadEventLoopGroup extends MultithreadEventExecutor
         //默认线程的数量
         DEFAULT_EVENT_LOOP_THREADS = Math.max(1, SystemPropertyUtil.getInt(
                 "io.netty.eventLoopThreads", Runtime.getRuntime().availableProcessors() * 2));
-
+        logger.info("------可以利用的线程数量------:\t" +  SystemPropertyUtil.getInt(
+                "io.netty.eventLoopThreads", Runtime.getRuntime().availableProcessors() * 2));
         if (logger.isDebugEnabled()) {
             logger.debug("-Dio.netty.eventLoopThreads: {}", DEFAULT_EVENT_LOOP_THREADS);
         }

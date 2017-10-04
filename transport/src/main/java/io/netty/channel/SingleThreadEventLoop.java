@@ -30,11 +30,16 @@ import java.util.concurrent.ThreadFactory;
  * Abstract base class for {@link EventLoop}s that execute all its submitted tasks in a single thread.
  *
  */
+//在单线程里，执行所有已经提交了任务
+// 这个类的重点，其实是对tailTasks队列的操作方法
+//
 public abstract class SingleThreadEventLoop extends SingleThreadEventExecutor implements EventLoop {
 
     protected static final int DEFAULT_MAX_PENDING_TASKS = Math.max(16,
             SystemPropertyUtil.getInt("io.netty.eventLoop.maxPendingTasks", Integer.MAX_VALUE));
 
+    // 又创建了一个队列
+    // 父类里，也有一个队列的
     private final Queue<Runnable> tailTasks;
 
     protected SingleThreadEventLoop(EventLoopGroup parent, ThreadFactory threadFactory, boolean addTaskWakesUp) {

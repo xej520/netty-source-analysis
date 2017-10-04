@@ -32,13 +32,17 @@ public final class DefaultEventExecutorChooserFactory implements EventExecutorCh
     @SuppressWarnings("unchecked")
     @Override
     public EventExecutorChooser newChooser(EventExecutor[] executors) {
+        //判断一个数是否是2的幂次方呢？ 如8 就是
         if (isPowerOfTwo(executors.length)) {
+            //PowerOfTwoEventExecutorChooser 下面的名字，写错了，官网已经更新了
+            //幂次方 线程选择器
+            //
             return new PowerOfTowEventExecutorChooser(executors);
         } else {
             return new GenericEventExecutorChooser(executors);
         }
     }
-
+    //判断一个整数是否是2的幂次方
     private static boolean isPowerOfTwo(int val) {
         return (val & -val) == val;
     }
@@ -53,6 +57,7 @@ public final class DefaultEventExecutorChooserFactory implements EventExecutorCh
 
         @Override
         public EventExecutor next() {
+            //每次选择索引为上一次所选线程索引+1的线程
             return executors[idx.getAndIncrement() & executors.length - 1];
         }
     }
@@ -67,6 +72,7 @@ public final class DefaultEventExecutorChooserFactory implements EventExecutorCh
 
         @Override
         public EventExecutor next() {
+            //每次选择索引为上一次所选线程索引+1的线程
             return executors[Math.abs(idx.getAndIncrement() % executors.length)];
         }
     }

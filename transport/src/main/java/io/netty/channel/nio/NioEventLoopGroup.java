@@ -24,6 +24,8 @@ import io.netty.util.concurrent.EventExecutor;
 import io.netty.util.concurrent.EventExecutorChooserFactory;
 import io.netty.util.concurrent.RejectedExecutionHandler;
 import io.netty.util.concurrent.RejectedExecutionHandlers;
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
 
 import java.nio.channels.Selector;
 import java.nio.channels.spi.SelectorProvider;
@@ -34,6 +36,8 @@ import java.util.concurrent.ThreadFactory;
  * {@link MultithreadEventLoopGroup} implementations which is used for NIO {@link Selector} based {@link Channel}s.
  */
 public class NioEventLoopGroup extends MultithreadEventLoopGroup {
+
+    private static final InternalLogger logger = InternalLoggerFactory.getInstance(NioEventLoopGroup.class);
 
     /**
      * Create a new instance using the default number of threads, the default {@link ThreadFactory} and
@@ -89,6 +93,7 @@ public class NioEventLoopGroup extends MultithreadEventLoopGroup {
     public NioEventLoopGroup(int nThreads, Executor executor, final SelectorProvider selectorProvider,
                              final SelectStrategyFactory selectStrategyFactory) {
         super(nThreads, executor, selectorProvider, selectStrategyFactory, RejectedExecutionHandlers.reject());
+        logger.info("------nThreads:{}, ----executor:{}", nThreads, executor);
     }
 
     public NioEventLoopGroup(int nThreads, Executor executor, EventExecutorChooserFactory chooserFactory,

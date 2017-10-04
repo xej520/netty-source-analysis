@@ -15,6 +15,9 @@
  */
 package io.netty.channel;
 
+//这里面声明的方法，都有一个共性，传输或者说传递:
+//就是将一个IO事件，传递到下一个handler中去
+
 public interface ChannelInboundInvoker {
 
     /**

@@ -36,11 +36,13 @@ import java.util.concurrent.RejectedExecutionException;
 
 /**
  * A skeletal {@link Channel} implementation.
+ * Channel概况
  */
 public abstract class AbstractChannel extends DefaultAttributeMap implements Channel {
 
     private static final InternalLogger logger = InternalLoggerFactory.getInstance(AbstractChannel.class);
 
+    //定义了一批 异常常量
     private static final ClosedChannelException FLUSH0_CLOSED_CHANNEL_EXCEPTION = ThrowableUtil.unknownStackTrace(
             new ClosedChannelException(), AbstractUnsafe.class, "flush0()");
     private static final ClosedChannelException ENSURE_OPEN_CLOSED_CHANNEL_EXCEPTION = ThrowableUtil.unknownStackTrace(
@@ -296,6 +298,7 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
 
     @Override
     public ChannelFuture writeAndFlush(Object msg) {
+        logger.info("-----------AbstractChannel---------");
         return pipeline.writeAndFlush(msg);
     }
 

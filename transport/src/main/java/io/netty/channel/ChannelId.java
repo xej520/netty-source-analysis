@@ -19,8 +19,10 @@ package io.netty.channel;
 import java.io.Serializable;
 
 /**
+ *
  * Represents the globally unique identifier of a {@link Channel}.
  * <p>
+ *
  * The identifier is generated from various sources listed in the following:
  * <ul>
  * <li>MAC address (EUI-48 or EUI-64) or the network adapter, preferrably a globally unique one,</li>
@@ -36,13 +38,17 @@ import java.io.Serializable;
  * which are auto-detected at the class-loading time in best-effort manner.  If all attempts to acquire them fail,
  * a warning message is logged, and random values will be used instead.  Alternatively, you can specify them manually
  * via system properties:
- * <ul>
+ * <ul>               唯一标识，是可以配置的
  * <li>{@code io.netty.machineId} - hexadecimal representation of 48 (or 64) bit integer,
  *     optionally separated by colon or hyphen.</li>
- * <li>{@code io.netty.processId} - an integer between 0 and 65535</li>
+ * <li>{@code io.netty.processId} - an integer between 0 and 65535</li>  0 到65535之间
  * </ul>
  * </p>
  */
+
+//ChannelId 表示全局的唯一标识
+//生成唯一标识的方式
+//唯一标识，是可以配置的
 public interface ChannelId extends Serializable, Comparable<ChannelId> {
     /**
      * Returns the short but globally non-unique string representation of the {@link ChannelId}.

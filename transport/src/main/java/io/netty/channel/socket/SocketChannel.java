@@ -22,6 +22,8 @@ import java.net.InetSocketAddress;
 /**
  * A TCP/IP socket {@link Channel}.
  */
+//这里是Netty版本的SocketChannel,
+//跟Java NIO 原生的SocketChannel是不一样的
 public interface SocketChannel extends DuplexChannel {
     @Override
     ServerSocketChannel parent();

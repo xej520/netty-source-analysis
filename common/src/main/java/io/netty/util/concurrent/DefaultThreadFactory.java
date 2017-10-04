@@ -17,6 +17,8 @@
 package io.netty.util.concurrent;
 
 import io.netty.util.internal.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Locale;
 import java.util.concurrent.ThreadFactory;
@@ -26,6 +28,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * A {@link ThreadFactory} implementation with a simple naming rule.
  */
 public class DefaultThreadFactory implements ThreadFactory {
+
+    private static final Logger logger = LoggerFactory.getLogger(DefaultThreadFactory.class);
 
     private static final AtomicInteger poolId = new AtomicInteger();
 
@@ -96,6 +100,9 @@ public class DefaultThreadFactory implements ThreadFactory {
         this.daemon = daemon;
         this.priority = priority;
         this.threadGroup = threadGroup;
+
+        logger.info("-----daemon:{},\t----->priority:{},\t----->threadGroup:{}", daemon, priority, threadGroup);
+
     }
 
     public DefaultThreadFactory(String poolName, boolean daemon, int priority) {

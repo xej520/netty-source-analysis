@@ -175,6 +175,7 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
             }
         }
 
+        //获取跟管道 管理的ChannelPipeline
         ChannelPipeline p = channel.pipeline();
 
         final EventLoopGroup currentChildGroup = childGroup;

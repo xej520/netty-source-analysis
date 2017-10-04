@@ -533,6 +533,7 @@ public class CombinedChannelDuplexHandler<I extends ChannelInboundHandler, O ext
 
         @Override
         public ChannelFuture writeAndFlush(Object msg, ChannelPromise promise) {
+            logger.info("-------CombinedChannelDuplexHandler---------------");
             return ctx.writeAndFlush(msg, promise);
         }
 

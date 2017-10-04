@@ -30,11 +30,17 @@ import java.util.concurrent.TimeUnit;
 /**
  * Abstract base class for {@link EventExecutor} implementations.
  */
+
+//继承的是线程池，因此，提交线程，使用的是submit
+//AbstractEventExecutor 这个类的重点是 以下3个方面
+//线程的提交submit
+//线程的调度
+//线程的获取结果
 public abstract class AbstractEventExecutor extends AbstractExecutorService implements EventExecutor {
     private static final InternalLogger logger = InternalLoggerFactory.getInstance(AbstractEventExecutor.class);
 
-    static final long DEFAULT_SHUTDOWN_QUIET_PERIOD = 2;
-    static final long DEFAULT_SHUTDOWN_TIMEOUT = 15;
+    static final long DEFAULT_SHUTDOWN_QUIET_PERIOD = 2;//
+    static final long DEFAULT_SHUTDOWN_TIMEOUT = 15; //默认的关闭超时时间
 
     private final EventExecutorGroup parent;
     private final Collection<EventExecutor> selfCollection = Collections.<EventExecutor>singleton(this);
@@ -89,6 +95,9 @@ public abstract class AbstractEventExecutor extends AbstractExecutorService impl
         return Collections.emptyList();
     }
 
+    //下面这些，主要表示的是
+    //线程的 执行结果，获取结果的
+
     @Override
     public <V> Promise<V> newPromise() {
         return new DefaultPromise<V>(this);
@@ -109,6 +118,7 @@ public abstract class AbstractEventExecutor extends AbstractExecutorService impl
         return new FailedFuture<V>(this, cause);
     }
 
+    //下面这些  重写是Java AbstractExecutorService里原生的方法
     @Override
     public Future<?> submit(Runnable task) {
         return (Future<?>) super.submit(task);

@@ -18,6 +18,11 @@ package io.netty.util.concurrent;
 /**
  * Expose details for a {@link Thread}.
  */
+//很明显，线程的基本属性
+// 线程的状态
+//线程的优先级
+//是否是守护线程
+//是否是ative状态
 public interface ThreadProperties {
     /**
      * @see {@link Thread#getState()}.

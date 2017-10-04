@@ -26,8 +26,14 @@ import java.util.concurrent.TimeUnit;
 /**
  * Abstract base class for {@link EventExecutor}s that want to support scheduling.
  */
+//从名字中，可以很容易看出来
+//AbstractScheduledEventExecutor 比 AbstractEventExecutor 多了线程的调度功能
+//就是让线程扔进一个队列里，定时调度之类的，可以和Java 里并发线程 进行比较
 public abstract class AbstractScheduledEventExecutor extends AbstractEventExecutor {
 
+    //声明一个队列
+    //其实，就是线程的执行结果
+    //最主要的还是调用Java 并发线程里 原生的Callable里的run方法
     Queue<ScheduledFutureTask<?>> scheduledTaskQueue;
 
     protected AbstractScheduledEventExecutor() {
@@ -41,8 +47,10 @@ public abstract class AbstractScheduledEventExecutor extends AbstractEventExecut
         return ScheduledFutureTask.nanoTime();
     }
 
+    //优先级队列
     Queue<ScheduledFutureTask<?>> scheduledTaskQueue() {
         if (scheduledTaskQueue == null) {
+            //初始化 优先级队列
             scheduledTaskQueue = new PriorityQueue<ScheduledFutureTask<?>>();
         }
         return scheduledTaskQueue;
@@ -57,6 +65,7 @@ public abstract class AbstractScheduledEventExecutor extends AbstractEventExecut
      *
      * This method MUST be called only when {@link #inEventLoop()} is {@code true}.
      */
+    //实现了netty版本的 取消线程任务的方法
     protected void cancelScheduledTasks() {
         assert inEventLoop();
         Queue<ScheduledFutureTask<?>> scheduledTaskQueue = this.scheduledTaskQueue;
@@ -190,6 +199,7 @@ public abstract class AbstractScheduledEventExecutor extends AbstractEventExecut
                 ScheduledFutureTask.deadlineNanos(unit.toNanos(initialDelay)), -unit.toNanos(delay)));
     }
 
+    //往队列里，添加任务
     <V> ScheduledFuture<V> schedule(final ScheduledFutureTask<V> task) {
         if (inEventLoop()) {
             scheduledTaskQueue().add(task);

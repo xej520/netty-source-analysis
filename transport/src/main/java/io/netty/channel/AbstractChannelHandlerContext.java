@@ -105,7 +105,8 @@ abstract class AbstractChannelHandlerContext extends DefaultAttributeMap
         // Its ordered if its driven by the EventLoop or the given Executor is an instanceof OrderedEventExecutor.
         ordered = executor == null || executor instanceof OrderedEventExecutor;
     }
-
+//  很明显从ChannelHandlerContext获取的Channel， ChannelPipeline
+    //底层其实调用的是与其关联的ChannelPipeline的实例对象来获得的
     @Override
     public Channel channel() {
         return pipeline.channel();
@@ -749,6 +750,7 @@ abstract class AbstractChannelHandlerContext extends DefaultAttributeMap
 
     private void invokeWrite0(Object msg, ChannelPromise promise) {
         try {
+            logger.info("----<AbstractChannelHandlerContext.java>----invokeWrite0方法------");
             ((ChannelOutboundHandler) handler()).write(this, msg, promise);
         } catch (Throwable t) {
             notifyOutboundHandlerException(t, promise);
@@ -812,9 +814,11 @@ abstract class AbstractChannelHandlerContext extends DefaultAttributeMap
 
     private void invokeWriteAndFlush(Object msg, ChannelPromise promise) {
         if (invokeHandler()) {
+            logger.info("----<AbstractChannelHandlerContext.java>---invokeWriteAndFlush方法-----1---");
             invokeWrite0(msg, promise);
             invokeFlush0();
         } else {
+            logger.info("----<AbstractChannelHandlerContext.java>---invokeWriteAndFlush方法-----2---");
             writeAndFlush(msg, promise);
         }
     }
@@ -824,6 +828,7 @@ abstract class AbstractChannelHandlerContext extends DefaultAttributeMap
         final Object m = pipeline.touch(msg, next);
         EventExecutor executor = next.executor();
         if (executor.inEventLoop()) {
+            logger.info("--------write方法-----flush----:\t" + flush);
             if (flush) {
                 next.invokeWriteAndFlush(m, promise);
             } else {
@@ -831,7 +836,9 @@ abstract class AbstractChannelHandlerContext extends DefaultAttributeMap
             }
         } else {
             AbstractWriteTask task;
+
             if (flush) {
+                logger.info("-------write方法-----WriteAndFlushTask.newInstance-----flush------:\t" + flush);
                 task = WriteAndFlushTask.newInstance(next, m, promise);
             }  else {
                 task = WriteTask.newInstance(next, m, promise);
@@ -955,6 +962,9 @@ abstract class AbstractChannelHandlerContext extends DefaultAttributeMap
 
     private AbstractChannelHandlerContext findContextOutbound() {
         AbstractChannelHandlerContext ctx = this;
+        logger.info("-------this----this---:\t" + this);
+        logger.info("-------this----executor---:\t" + this.executor);
+        logger.info("-------this----executor()---:\t" + this.executor());
         do {
             ctx = ctx.prev;
         } while (!ctx.outbound);

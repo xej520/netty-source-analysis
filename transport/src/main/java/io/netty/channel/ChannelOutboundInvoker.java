@@ -21,6 +21,11 @@ import io.netty.util.concurrent.FutureListener;
 import java.net.ConnectException;
 import java.net.SocketAddress;
 
+//此接口，声明的方法，大概有以下几类
+//bind 绑定
+//connect() 链接
+//read()  读
+//write() 写
 public interface ChannelOutboundInvoker {
 
     /**
@@ -229,6 +234,7 @@ public interface ChannelOutboundInvoker {
     ChannelFuture writeAndFlush(Object msg, ChannelPromise promise);
 
     /**
+     * shorcut 就是一种快捷方式，
      * Shortcut for call {@link #write(Object)} and {@link #flush()}.
      */
     ChannelFuture writeAndFlush(Object msg);

@@ -54,6 +54,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *
  */
 //主要用来处理task，注册通道到主线程的selector中的register()
+//NioEventLoop 主要做了什么事情？大概三大事件吧
+// 很明显，主要是封装了Java NIO原生的Selector
+// 1、创建Selector,
+// 2、注册感兴趣的事件，
+// 3、监听感兴趣的事件selectNow()，立即返回
+
 public final class NioEventLoop extends SingleThreadEventLoop {
 
     private static final InternalLogger logger = InternalLoggerFactory.getInstance(NioEventLoop.class);
@@ -79,6 +85,7 @@ public final class NioEventLoop extends SingleThreadEventLoop {
         }
     };
 
+    //JDK NIO bug的解决方式
     // Workaround for JDK NIO bug.
     //
     // See:
@@ -117,6 +124,8 @@ public final class NioEventLoop extends SingleThreadEventLoop {
     /**
      * The NIO {@link Selector}.
      */
+    //调用的是JAVA  原生
+    // netty世界里，再次对Java NIO的再次封装呗
     Selector selector;
     private SelectedSelectionKeySet selectedKeys;
 

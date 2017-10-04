@@ -45,7 +45,9 @@ import java.util.concurrent.Executor;
 
 /**
  * {@link io.netty.channel.socket.SocketChannel} which uses NIO selector based implementation.
+ *  应该是  基于NIO的selector实现的
  */
+//SocketChannel 这里
 public class NioSocketChannel extends AbstractNioByteChannel implements io.netty.channel.socket.SocketChannel {
     private static final InternalLogger logger = InternalLoggerFactory.getInstance(NioSocketChannel.class);
     private static final SelectorProvider DEFAULT_SELECTOR_PROVIDER = SelectorProvider.provider();

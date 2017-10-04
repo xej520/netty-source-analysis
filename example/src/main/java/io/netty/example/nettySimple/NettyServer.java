@@ -12,12 +12,15 @@ import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.codec.Delimiters;
 import io.netty.handler.codec.string.StringEncoder;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * Created by erjun on 2017/9/1.
  */
 public class NettyServer {
 	public static void main(String[] args) {
-
 		// 负责accept请求
 		EventLoopGroup parentGroup = new NioEventLoopGroup(1);
 		// 处理请求，读写
