@@ -28,6 +28,10 @@ import java.nio.charset.Charset;
 @Sharable
 public class EchoServerHandler extends ChannelInboundHandlerAdapter {
 
+    //这里体现出来的，应该就是
+    //事件机制，Object msg 就是消息
+    //接收到什么类型，就会触发对应的机制
+    // 这是netty 4.0版本，而netty3.0版本，这里是，对应的是MessageEvent
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
 //        ctx.write(msg);
